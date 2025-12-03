@@ -17,22 +17,37 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// CORS mejorado para producción - Permite todas las URLs de Vercel
+// CORS mejorado para producción
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://ecomers-levelup.vercel.app',
-  'https://e-comers-lupg-bvn7.vercel.app',
-  'https://ecomers-levelup-jxsxcw10i-leonardorvzs-projects.vercel.app',
   process.env.FRONTEND_ORIGIN
-].filter(Boolean);
+];
 
-app.use(cors({ 
-  origin: allowedOrigins,
+// Función para validar origen dinámicamente
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Permitir requests sin origin (mobile apps, curl, etc)
+    if (!origin) return callback(null, true);
+    
+    // Permitir todas las URLs locales y configuradas
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    
+    // Permitir TODAS las URLs de Vercel
+    if (origin.includes('vercel.app') || origin.includes('onrender.com')) {
+      return callback(null, true);
+    }
+    
+    callback(null, true); // En producción, permitir todo para evitar CORS
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-}));
+};
+
+app.use(cors(corsOptions));
 
 // Rutas API
 app.use('/api/auth', authRoutes);
