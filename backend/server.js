@@ -17,12 +17,13 @@ const PORT = process.env.PORT || 4000;
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
 
-// CORS mejorado para producción
+// CORS mejorado para producción - Permite todas las URLs de Vercel
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://ecomers-levelup.vercel.app',
   'https://e-comers-lupg-bvn7.vercel.app',
+  'https://ecomers-levelup-jxsxcw10i-leonardorvzs-projects.vercel.app',
   process.env.FRONTEND_ORIGIN
 ].filter(Boolean);
 
