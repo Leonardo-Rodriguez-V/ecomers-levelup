@@ -22,6 +22,7 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://ecomers-levelup.vercel.app',
+  'https://e-comers-lupg-bvn7.vercel.app',
   process.env.FRONTEND_ORIGIN
 ].filter(Boolean);
 
