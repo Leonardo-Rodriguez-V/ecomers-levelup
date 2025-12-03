@@ -22,9 +22,11 @@ export default function CatalogPage({ addToCart, setCart }) {
     const fetchProducts = async () => {
       try {
         const { data } = await api.get('/products');
+        console.log(`✅ Productos cargados: ${data.length} productos`);
         setProducts(data);
       } catch (error) {
-        console.error("Error cargando productos:", error);
+        console.error("Error cargando productos:", error.message);
+        console.error("API URL:", import.meta.env.VITE_API_URL);
         // Fallback to mock data
         setProducts(mockProducts);
         toast.info("Mostrando catálogo de demostración");

@@ -16,11 +16,18 @@ export default function HomePage({ setCart, addToCart }) {
     // Fetch active offer
     api.get('/offers/active')
       .then(res => {
-        if (res.data) setOffer(res.data);
-        else setOffer(mockOffer); // Fallback if no data
+        if (res.data) {
+          console.log('✅ Oferta cargada:', res.data.title);
+          setOffer(res.data);
+        }
+        else {
+          console.warn('No hay oferta activa, usando mockOffer');
+          setOffer(mockOffer); // Fallback if no data
+        }
       })
       .catch(err => {
-        console.error("Error fetching offer:", err);
+        console.error("Error fetching offer:", err.message);
+        console.log('API URL:', import.meta.env.VITE_API_URL);
         setOffer(mockOffer); // Fallback on error
       })
       .finally(() => setLoadingOffer(false));

@@ -16,7 +16,22 @@ const PORT = process.env.PORT || 4000;
 // Middlewares
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: process.env.FRONTEND_ORIGIN || '*' }));
+
+// CORS mejorado para producción
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://e-comers-lupg-bvn7-git-main-leonardorvzs-projects.vercel.app',
+  'https://e-comers-lupg-bvn7-9r2f6utq4-leonardorvzs-projects.vercel.app',
+  process.env.FRONTEND_ORIGIN
+].filter(Boolean);
+
+app.use(cors({ 
+  origin: allowedOrigins,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // Rutas API
 app.use('/api/auth', authRoutes);
